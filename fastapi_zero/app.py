@@ -1,9 +1,9 @@
 from http import HTTPStatus
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
 
 from fastapi_zero.schemas import (
-    Message,
     UserDB,
     UserList,
     UserPublic,
@@ -14,9 +14,22 @@ app = FastAPI()
 database = []
 
 
-@app.get('/', status_code=HTTPStatus.OK, response_model=Message)
+@app.get('/', status_code=HTTPStatus.OK, response_class=HTMLResponse)
 def read_root():
-    return {'message': 'Olá, mundo!'}
+    html_conent = """
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Olá, Mundo!</title>
+    </head>
+    <body>
+        <h1>Olá, mundo!</h1>
+    </body>
+    </html>
+        """
+    return html_conent
 
 
 @app.post('/users/', status_code=HTTPStatus.CREATED, response_model=UserPublic)
